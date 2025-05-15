@@ -14,5 +14,7 @@
     "deduplication.BeneficiaryDuplicatesTable.checkbox.header": "Select all columns",
     "deduplication.BeneficiaryDuplicatesTable.merge.header": "Don't merge",
     "deduplication.BeneficiaryDuplicatesTable.output": "OUTPUT:",
-    "deduplication.BeneficiaryDuplicatesTable.oldest": "Oldest"
+    "deduplication.BeneficiaryDuplicatesTable.oldest": "Oldest",
+    "deduplication.gql_create_deduplication_review_perms": "Deduplication | Create Deduplication Review",
+    "deduplication.gql_create_deduplication_payment_review_perms": "Deduplication | Create Deduplication Payment Review"
 }
