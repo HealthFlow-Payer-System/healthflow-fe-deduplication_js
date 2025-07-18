@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import {
   TableContainer, TableHead, TableBody, Table, TableCell, TableRow, Paper,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+} from '@mui/material';
+import { makeStyles } from '@mui/material/styles';
 
 import { useModulesManager, ProgressOrError, useTranslations } from '@openimis/fe-core';
 import { MODULE_NAME } from '../../constants';

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   FormattedMessage,
 } from '@openimis/fe-core';
