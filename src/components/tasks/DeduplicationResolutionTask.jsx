@@ -1,11 +1,11 @@
 import React from 'react';
 import { Typography } from '@mui/material';
-import { makeStyles } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import BeneficiaryDuplicatesTable from '../BeneficiaryDuplicatesTable';
 
-const useStyles = makeStyles((theme) => ({
-  paper: theme.paper.paper,
-  title: theme.paper.title,
+const StyledDeduplicationResolutionTask = styled('div')(({ theme }) => ({
+  '& .paper': theme.paper.paper,
+  '& .title': theme.paper.title,
 }));
 
 function BeneficiaryDeduplicationTaskDisplay({
@@ -13,7 +13,6 @@ function BeneficiaryDeduplicationTaskDisplay({
 }) {
   if (!businessData) return null;
 
-  const classes = useStyles();
   const completedData = jsonExt?.additional_resolve_data
     ? Object.values(jsonExt.additional_resolve_data)[0].values
     : null;
@@ -43,8 +42,8 @@ function BeneficiaryDeduplicationTaskDisplay({
   beneficiaries.sort((a, b) => new Date(a.date_created) - new Date(b.date_created));
 
   return (
-    <div>
-      <Typography className={classes.title} style={{ textAlign: 'center' }}>
+    <StyledDeduplicationResolutionTask>
+      <Typography className="title" style={{ textAlign: 'center' }}>
         {JSON.stringify(businessData?.column_values)}
         {' '}
         ,
@@ -61,7 +60,7 @@ function BeneficiaryDeduplicationTaskDisplay({
         />
 
       </div>
-    </div>
+    </StyledDeduplicationResolutionTask>
   );
 }
 

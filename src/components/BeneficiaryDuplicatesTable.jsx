@@ -1,40 +1,41 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import {
-  makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
   FormattedMessage,
 } from '@openimis/fe-core';
 
-const useStyles = makeStyles((theme) => ({
-  paper: theme.paper.paper,
-  table: theme.table,
-  tableTitle: theme.table.title,
-  tableHeader: theme.table.header,
-  tableRow: theme.table.row,
-  title: theme.paper.title,
-  tableDisabledRow: theme.table.disabledRow,
-  tableDisabledCell: theme.table.disabledCell,
-  tableContainer: {
+const StyledBeneficiaryDuplicatesTable = styled('div')(({ theme }) => ({
+  '& .paper': theme.paper.paper,
+  '& .table': theme.table,
+  '& .tableTitle': theme.table.title,
+  '& .tableHeader': theme.table.header,
+  '& .tableRow': theme.table.row,
+  '& .title': theme.paper.title,
+  '& .tableDisabledRow': theme.table.disabledRow,
+  '& .tableDisabledCell': theme.table.disabledCell,
+  '& .tableContainer': {
     overflow: 'auto',
   },
-  hoverableCell: {
+  '& .hoverableCell': {
     '&:hover': {
       backgroundColor: '#f0f0f0',
     },
     cursor: 'pointer',
   },
-  selectedCell: {
+  '& .selectedCell': {
     backgroundColor: '#a1caf1',
   },
-  checkboxCell: {
+  '& .checkboxCell': {
     textAlign: 'center',
   },
-  deactivatedRow: {
+  '& .deactivatedRow': {
     opacity: 0.5,
   },
-  strikethrough: {
+  '& .strikethrough': {
     textDecoration: 'line-through',
   },
 }));
@@ -42,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 function BeneficiaryDuplicatesTable({
   headers, rows, setAdditionalData, completedData,
 }) {
-  const classes = useStyles();
   const [selectedCells, setSelectedCells] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [dontMergeRows, setDontMergeRows] = useState([]);
@@ -159,85 +159,87 @@ function BeneficiaryDuplicatesTable({
   }, [completedData]);
 
   return (
-    <div className={classes.tableContainer}>
-      <TableContainer className={classes.paper}>
-        <Table size="small" className={classes.table} aria-label="dynamic table">
-          <TableHead className={classes.header}>
-            <TableRow className={classes.header}>
-              <TableCell key="checkbox-header-merge" className={classes.checkboxCell}>
-                <FormattedMessage module="deduplication" id="BeneficiaryDuplicatesTable.merge.header" />
-              </TableCell>
-              <TableCell key="checkbox-header" className={classes.checkboxCell}>
-                <FormattedMessage module="deduplication" id="BeneficiaryDuplicatesTable.checkbox.header" />
-              </TableCell>
-              {headers.map((header, index) => (
-                <TableCell key={index}>{header}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row, rowIndex) => (
-              <TableRow
-                key={rowIndex}
-                className={classes.tableRow}
-              >
-                <TableCell key={`merge-cell-${rowIndex}`} className={classes.checkboxCell}>
-                  {rowIndex
-                    ? (
-                      <Checkbox
-                        color="primary"
-                        checked={isDontMereChecked(rowIndex)}
-                        onChange={() => handleMergeCheckboxChange(rowIndex)}
-                        disabled={completedData}
-                      />
-                    )
-                    : <FormattedMessage module="deduplication" id="BeneficiaryDuplicatesTable.oldest" />}
+    <StyledBeneficiaryDuplicatesTable>
+      <div className="tableContainer">
+        <TableContainer className="paper">
+          <Table size="small" className="table" aria-label="dynamic table">
+            <TableHead className="tableHeader">
+              <TableRow className="tableHeader">
+                <TableCell key="checkbox-header-merge" className="checkboxCell">
+                  <FormattedMessage module="deduplication" id="BeneficiaryDuplicatesTable.merge.header" />
                 </TableCell>
-                <TableCell key={`checkbox-cell-${rowIndex}`} className={classes.checkboxCell}>
-                  <Checkbox
-                    color="primary"
-                    checked={rowIndex === selectedRow}
-                    onChange={() => handleCheckboxChange(rowIndex)}
-                    disabled={shouldDisableCell(rowIndex)}
-                  />
+                <TableCell key="checkbox-header" className="checkboxCell">
+                  <FormattedMessage module="deduplication" id="BeneficiaryDuplicatesTable.checkbox.header" />
+                </TableCell>
+                {headers.map((header, index) => (
+                  <TableCell key={index}>{header}</TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, rowIndex) => (
+                <TableRow
+                  key={rowIndex}
+                  className="tableRow"
+                >
+                  <TableCell key={`merge-cell-${rowIndex}`} className="checkboxCell">
+                    {rowIndex
+                      ? (
+                        <Checkbox
+                          color="primary"
+                          checked={isDontMereChecked(rowIndex)}
+                          onChange={() => handleMergeCheckboxChange(rowIndex)}
+                          disabled={completedData}
+                        />
+                      )
+                      : <FormattedMessage module="deduplication" id="BeneficiaryDuplicatesTable.oldest" />}
+                  </TableCell>
+                  <TableCell key={`checkbox-cell-${rowIndex}`} className="checkboxCell">
+                    <Checkbox
+                      color="primary"
+                      checked={rowIndex === selectedRow}
+                      onChange={() => handleCheckboxChange(rowIndex)}
+                      disabled={shouldDisableCell(rowIndex)}
+                    />
+                  </TableCell>
+                  {headers.map((header, headerIndex) => (
+                    <TableCell
+                      key={headerIndex}
+                      className={`
+                      ${isCellSelected(rowIndex, header) ? 'selectedCell' : ''} 
+                      ${shouldHoverCell(rowIndex, header) ? 'hoverableCell' : ''} 
+                      ${shouldDisableCell(rowIndex) ? 'tableDisabledCell' : ''}
+                      ${shouldCrossText(rowIndex) ? 'strikethrough' : ''}
+                      `}
+                      onClick={() => handleCellClick(rowIndex, header, row[header])}
+                    >
+                      {row[header]}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+              <TableRow
+                className="tableRow"
+              >
+                <TableCell className="checkboxCell" />
+                <TableCell className="checkboxCell">
+                  <FormattedMessage module="deduplication" id="BeneficiaryDuplicatesTable.output" />
                 </TableCell>
                 {headers.map((header, headerIndex) => (
                   <TableCell
                     key={headerIndex}
-                    className={`
-                    ${isCellSelected(rowIndex, header) ? classes.selectedCell : ''} 
-                    ${shouldHoverCell(rowIndex, header) ? classes.hoverableCell : ''} 
-                    ${shouldDisableCell(rowIndex) ? classes.tableDisabledCell : ''}
-                    ${shouldCrossText(rowIndex) ? classes.strikethrough : ''}
-                    `}
-                    onClick={() => handleCellClick(rowIndex, header, row[header])}
+                    className={`tableDisabledCell 
+                    ${completedData ? 'selectedCell' : ''}`}
                   >
-                    {row[header]}
+                    {Object.prototype.hasOwnProperty.call(fieldValues, header) ? fieldValues[header] : rows[0][header]}
                   </TableCell>
                 ))}
               </TableRow>
-            ))}
-            <TableRow
-              className={classes.tableRow}
-            >
-              <TableCell className={classes.checkboxCell} />
-              <TableCell className={classes.checkboxCell}>
-                <FormattedMessage module="deduplication" id="BeneficiaryDuplicatesTable.output" />
-              </TableCell>
-              {headers.map((header, headerIndex) => (
-                <TableCell
-                  key={headerIndex}
-                  className={`${classes.tableDisabledCell} 
-                  ${completedData ? classes.selectedCell : ''}`}
-                >
-                  {Object.prototype.hasOwnProperty.call(fieldValues, header) ? fieldValues[header] : rows[0][header]}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </StyledBeneficiaryDuplicatesTable>
   );
 }
 
