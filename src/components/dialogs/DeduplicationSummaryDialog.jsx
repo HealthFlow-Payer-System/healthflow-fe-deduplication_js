@@ -113,6 +113,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   createDeduplicationTasks,
 }, dispatch);
 
+export { StyledDialogContent };
 export default injectIntl(
   connect(mapStateToProps, mapDispatchToProps)(DeduplicationSummaryDialog),
 );
