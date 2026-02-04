@@ -16,7 +16,7 @@ import DeduplicationFieldPicker from '../pickers/DeduplicationFieldPicker';
 import DeduplicationSummaryDialog from './DeduplicationSummaryDialog';
 
 const StyledDeduplicationFieldSelectionDialog = styled('div')(({ theme }) => ({
-  '& .item': theme.paper.item,
+  '& .item': theme.paper?.item ?? {},
 }));
 
 function DeduplicationFieldSelectionDialog({

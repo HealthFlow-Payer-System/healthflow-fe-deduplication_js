@@ -4,8 +4,8 @@ import { styled } from '@mui/material/styles';
 import BeneficiaryDuplicatesTable from '../BeneficiaryDuplicatesTable';
 
 const StyledDeduplicationResolutionTask = styled('div')(({ theme }) => ({
-  '& .paper': theme.paper.paper,
-  '& .title': theme.paper.title,
+  '& .paper': theme.paper?.paper ?? {},
+  '& .title': theme.paper?.title ?? {},
 }));
 
 function BeneficiaryDeduplicationTaskDisplay({
