@@ -52,10 +52,10 @@ function BeneficiaryDuplicatesTable({
     const filteredIds = rows
       .filter((row, index) => !dontMergeRows.includes(index))
       .map((row) => row.beneficiaryId);
-    const parsedFieldValues = selectedCells.reduce((accumulation, cell) => {
-      accumulation[cell.header] = cell.value ?? '';
-      return accumulation;
-    }, {});
+    const parsedFieldValues = selectedCells.reduce((accumulation, cell) => ({
+      ...accumulation,
+      [cell.header]: cell.value ?? '',
+    }), {});
     const additionalData = (
       { values: parsedFieldValues, beneficiaryIds: filteredIds }
     );
