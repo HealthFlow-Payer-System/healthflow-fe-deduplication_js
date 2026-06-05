@@ -3,22 +3,22 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import {
   TableContainer, TableHead, TableBody, Table, TableCell, TableRow, Paper,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 import { useModulesManager, ProgressOrError, useTranslations } from '@openimis/fe-core';
 import { MODULE_NAME } from '../../constants';
 
-const useStyles = makeStyles((theme) => ({
-  footer: {
+const StyledDeduplicationSummaryTable = styled('div')(({ theme }) => ({
+  '& .footer': {
     marginInline: 16,
     marginBlock: 12,
   },
-  headerTitle: theme.table.title,
-  actionCell: {
+  '& .headerTitle': theme.table?.title ?? {},
+  '& .actionCell': {
     width: 60,
   },
-  header: theme.table.header,
+  '& .header': theme.table?.header ?? {},
 }));
 
 const DEDUPLICATION_SUMMARY_HEADERS = [
@@ -31,7 +31,6 @@ function DeduplicationSummaryTable({
 }) {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
-  const classes = useStyles();
   const { formatMessage } = useTranslations(MODULE_NAME, modulesManager);
   const {
     fetchingSummary, summary, errorSummary,
@@ -58,38 +57,40 @@ function DeduplicationSummaryTable({
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <TableHead className={classes.header}>
-          <TableRow className={classes.headerTitle}>
-            {DEDUPLICATION_SUMMARY_HEADERS.map((header) => (
-              <TableCell key={header}>
-                {' '}
-                {formatMessage(header)}
-                {' '}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <ProgressOrError progress={fetchingSummary} error={errorSummary} />
-          {summary?.map((result) => (
-            <TableRow key={result?.uuid}>
-              <TableCell>
-                {' '}
-                {reshapeColumnValues(result.columnValues)}
-                {' '}
-              </TableCell>
-              <TableCell>
-                {' '}
-                {result.count}
-                {' '}
-              </TableCell>
+    <StyledDeduplicationSummaryTable>
+      <TableContainer component={Paper}>
+        <Table size="small">
+          <TableHead className="header">
+            <TableRow className="headerTitle">
+              {DEDUPLICATION_SUMMARY_HEADERS.map((header) => (
+                <TableCell key={header}>
+                  {' '}
+                  {formatMessage(header)}
+                  {' '}
+                </TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            <ProgressOrError progress={fetchingSummary} error={errorSummary} />
+            {summary?.map((result) => (
+              <TableRow key={result?.uuid}>
+                <TableCell>
+                  {' '}
+                  {reshapeColumnValues(result.columnValues)}
+                  {' '}
+                </TableCell>
+                <TableCell>
+                  {' '}
+                  {result.count}
+                  {' '}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </StyledDeduplicationSummaryTable>
   );
 }
 

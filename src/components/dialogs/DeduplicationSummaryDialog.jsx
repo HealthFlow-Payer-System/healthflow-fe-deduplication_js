@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { injectIntl } from 'react-intl';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import { formatMessage } from '@openimis/fe-core';
-import { withTheme, withStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import DeduplicationSummaryTable from '../tables/DeduplicationSummaryTable';
 import { createDeduplicationTasks, fetchDeduplicationSummary } from '../../actions';
 
-const styles = (theme) => ({
-  item: theme.paper.item,
-});
+const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+  ...theme.paper?.item ?? {},
+}));
 
 function DeduplicationSummaryDialog({
   intl,
@@ -113,6 +113,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   createDeduplicationTasks,
 }, dispatch);
 
+export { StyledDialogContent };
 export default injectIntl(
-  withTheme(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DeduplicationSummaryDialog))),
+  connect(mapStateToProps, mapDispatchToProps)(DeduplicationSummaryDialog),
 );
