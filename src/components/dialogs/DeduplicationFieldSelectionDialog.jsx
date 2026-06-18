@@ -55,11 +55,9 @@ function DeduplicationFieldSelectionDialog({
     <StyledDeduplicationFieldSelectionDialog>
       <Button
         onClick={handleOpen}
-        variant="outlined"
-        color="#DFEDEF"
+        variant="text"
         className="button"
         style={{
-          border: '0px',
           marginTop: '6px',
         }}
       >
